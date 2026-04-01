@@ -16,7 +16,8 @@ if [ -z "$LAST_MESSAGE" ] || [ ${#LAST_MESSAGE} -lt "$THRESHOLD" ]; then
   osascript -e 'display notification "Empty output detected — forcing continuation" with title "claude-hang"' 2>/dev/null
 
   # Log for debugging
-  echo "[claude-hang] Response was empty or too brief (${#LAST_MESSAGE:-0} chars, threshold: $THRESHOLD). Forcing continuation." >&2
+  MSG_LEN=${#LAST_MESSAGE}
+  echo "[claude-hang] Response was empty or too brief (${MSG_LEN} chars, threshold: ${THRESHOLD}). Forcing continuation." >&2
 
   exit 2  # Force Claude Code to continue
 fi
