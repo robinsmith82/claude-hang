@@ -58,16 +58,17 @@ cp hooks/notify-stop-failure.sh ~/.claude/hooks/
 chmod +x ~/.claude/hooks/detect-empty-stop.sh ~/.claude/hooks/notify-stop-failure.sh
 ```
 
-2. Add to `~/.claude/settings.json`:
+2. Add to `~/.claude/settings.json` (use your actual home directory path, not `~`):
 ```json
 {
   "hooks": {
     "Stop": [
       {
+        "matcher": "",
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/detect-empty-stop.sh",
+            "command": "/Users/YOUR_USERNAME/.claude/hooks/detect-empty-stop.sh",
             "timeout": 10
           }
         ]
@@ -75,10 +76,11 @@ chmod +x ~/.claude/hooks/detect-empty-stop.sh ~/.claude/hooks/notify-stop-failur
     ],
     "StopFailure": [
       {
+        "matcher": "",
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/notify-stop-failure.sh",
+            "command": "/Users/YOUR_USERNAME/.claude/hooks/notify-stop-failure.sh",
             "timeout": 10
           }
         ]

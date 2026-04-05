@@ -23,15 +23,17 @@ cp "$SCRIPT_DIR/hooks/detect-empty-stop.sh" "$HOOK_DIR/"
 cp "$SCRIPT_DIR/hooks/notify-stop-failure.sh" "$HOOK_DIR/"
 chmod +x "$HOOK_DIR/detect-empty-stop.sh" "$HOOK_DIR/notify-stop-failure.sh"
 
-# Build the hook config we want to add
-HOOK_CONFIG='{
+# Build the hook config with absolute paths (~ doesn't expand in hook context)
+HOOK_CONFIG=$(cat <<EOF
+{
   "hooks": {
     "Stop": [
       {
+        "matcher": "",
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/detect-empty-stop.sh",
+            "command": "$HOOK_DIR/detect-empty-stop.sh",
             "timeout": 10
           }
         ]
@@ -39,17 +41,20 @@ HOOK_CONFIG='{
     ],
     "StopFailure": [
       {
+        "matcher": "",
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/notify-stop-failure.sh",
+            "command": "$HOOK_DIR/notify-stop-failure.sh",
             "timeout": 10
           }
         ]
       }
     ]
   }
-}'
+}
+EOF
+)
 
 # Merge into existing settings.json (or create if missing)
 if [ -f "$SETTINGS" ]; then
