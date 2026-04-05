@@ -1,8 +1,20 @@
 # claude-hang
 
-Claude Code stalls with empty output. This fixes it.
+Auto-recover when Claude Code finishes a turn with empty or too-brief output.
 
 When Claude Code produces an empty or too-brief response and silently stops, `claude-hang` detects it, **forces Claude to continue working**, and sends you a macOS notification so you know it happened.
+
+## What this fixes (and what it doesn't)
+
+**This catches:** Claude finishes a turn but the output is empty or suspiciously short (under 20 chars). The hook forces Claude to retry instead of silently stopping.
+
+**This does NOT catch:**
+- Claude freezing mid-response (the turn never ends, so the hook never fires)
+- Claude running tool calls then stopping (tool-use turns are normal working behavior)
+- API timeouts or network issues mid-stream
+- Claude spinning/thinking forever without producing output
+
+The Stop hook only fires when Claude **completes a turn**. If Claude is stuck and never finishes, no hook can intervene — that's a Claude Code product limitation.
 
 ## Install
 
